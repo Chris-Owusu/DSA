@@ -15,7 +15,7 @@ class Node:
   def set_link_node(self, link_node):
     self.link_node = link_node
 
-    # Add your code below:
+    # Add your code below: Creating nodes
 yacko = Node("likes to yak")
 wacko = Node("has a penchant for hoarding snacks")
 dot = Node("enjoys spending time in movie lots")
