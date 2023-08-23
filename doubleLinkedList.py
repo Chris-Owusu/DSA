@@ -83,3 +83,15 @@ def remove_tail(self):
       self.remove_head()
 
     return removed_tail.get_value()
+
+def remove_by_value(self, value_to_remove):
+    node_to_remove = None
+
+    current_node = self.head_node
+    while current_node != None:
+      if current_node.get_value() is value_to_remove:
+        node_to_remove = current_node
+        break
+      if node_to_remove == None:
+        return None
+      current_node = current_node.get_next_node()
