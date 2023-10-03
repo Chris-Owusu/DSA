@@ -14,3 +14,5 @@ def binary_search(sorted_list, target):
 sorted_values = [13, 14, 15, 16, 17]
 print(binary_search([], 42))
 print(binary_search(sorted_values, 42))
+
+
