@@ -51,10 +51,12 @@ class Queue:
        print("Adding "  + str(item_to_add.get_value()) + " to the queue!")
 
        if self.is_empty() == True:
-        head = item_to_add
-        tail = item_to_add
+        self.head = item_to_add
+        self.tail = item_to_add
        else:
-        tail.set_next_node(item_to_add)
-        tail = item_to_add
+        self.tail.set_next_node(item_to_add)
+        self.tail = item_to_add
 
-        self.size = self.size + 1
+       self.size = self.size + 1
+    else:
+      print("Sorry, no more room!")
