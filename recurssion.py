@@ -32,3 +32,20 @@ def sum_to_one(n):
 
 # uncomment when you're ready to test
 print(sum_to_one(7))
+
+
+
+
+# Recursion and Big O
+
+def factorial(n):
+  while n <= 1:
+    return 1
+  return n * factorial(n - 1)
+
+
+print(factorial(2))
+print(factorial(1))
+print(factorial(0))
+print(factorial(12))
+print(factorial(43))
