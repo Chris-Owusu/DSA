@@ -49,3 +49,24 @@ print(factorial(1))
 print(factorial(0))
 print(factorial(12))
 print(factorial(43))
+
+
+# Nested List
+
+def flatten(my_list):
+  result = []
+
+  for i in my_list:
+    if isinstance(i, list):
+      print("List found!")
+
+      flat_list = flatten(i)
+      result += flat_list
+    else:
+      result.append(i)
+  return result
+
+### reserve for testing...
+planets = ['mercury', 'venus', ['earth'], 'mars', [['jupiter', 'saturn']], 'uranus', ['neptune', 'pluto']]
+
+print(flatten(planets))
