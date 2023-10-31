@@ -19,24 +19,31 @@ class BinarySearchTree:
       else:
         self.right.insert(value)
         
-  # Define .get_node_by_value() below:
   def get_node_by_value(self, value):
-    if (value == self.value):
+    if (self.value == value):
       return self
-    elif self.left is not None and value < self.value:
+    elif ((self.left is not None) and (value < self.value)):
       return self.left.get_node_by_value(value)
-    elif self.right is not None and value > self.value:
+    elif ((self.right is not None) and (value >= self.value)):
       return self.right.get_node_by_value(value)
-    else: 
+    else:
       return None
-  
-root = BinarySearchTree(100)
+    
+  # Define .depth_first_traversal() below:
+  def depth_first_traversal(self):
+    if (self.left is not None):
+      self.left.depth_first_traversal()
+    print(f'Depth={self.depth}, Value={self.value}')
+    if (self.right is not None):
+      self.right.depth_first_traversal()
 
-root.insert(50)
-root.insert(125)
-root.insert(75)
-root.insert(25)
+tree = BinarySearchTree(48)
+tree.insert(24)
+tree.insert(55)
+tree.insert(26)
+tree.insert(38)
+tree.insert(56)
+tree.insert(74)
 
-# Get nodes by value below:
-print(root.get_node_by_value(75).value)
-print(root.get_node_by_value(23))
+# Print depth-first traversal:
+tree.depth_first_traversal()
