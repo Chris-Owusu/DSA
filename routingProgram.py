@@ -160,7 +160,14 @@ from vc_landmarks import vc_landmarks
 from landmark_choices import landmark_choices
 
 # Build your program below:
+from graph_search import bfs, dfs
+from vc_metro import vc_metro
+from vc_landmarks import vc_landmarks
+from landmark_choices import landmark_choices
+
+# Build your program below:
 landmark_string = ""
+stations_under_construction = ['Vancouver Aquarium']
 def greet():
   print("Hi there and welcome to SkyRoute!")
   print("We'll help you find the shortest route between the following Vancouver landmarks:\n" + landmark_string)
@@ -209,9 +216,13 @@ def set_start_and_end(start_point, end_point):
 
 def new_route(start_point=None, end_point=None):
   start_point, end_point = set_start_and_end(start_point, end_point)
-  shortest_route = get_route(start_point, end_point)
-  shortest_route_string = '\n'.join(shortest_route)
-  print("The shortest metro route from {0} to {1} is:\n{2}".format(start_point, end_point, shortest_route_string))
+  shortest_route = None
+  if shortest_route:
+    shortest_route = get_route(start_point, end_point)
+    shortest_route_string = '\n'.join(shortest_route)
+    print("The shortest metro route from {0} to {1} is:\n{2}".format(start_point, end_point, shortest_route_string))
+  else:
+    print("Unfortunately, there is currently no path between {0} and {1} due to maintenance.".format(start_point, end_point))
   again = input("Would you like to see another route? Enter y/n: ")
   if again == "y":
     new_route(start_point, end_point)
@@ -223,16 +234,40 @@ def show_landmarks():
     print(landmark_string)
 
 def get_route(start_point, end_point):
-  start_stations = vc_landmarks[start_point]
-  end_stations = vc_landmarks[end_point]
-  routes = []
-  for start_station in start_stations:
-    for end_station in end_stations:
-      route = bfs(vc_metro, start_station, end_station)
-      if route:
-        routes.append(route)
-  shortest_route = min(routes, key=len)
-  return shortest_route
+    start_stations = vc_landmarks[start_point]
+    end_stations = vc_landmarks[end_point]
+    routes = []
+
+    for start_station in start_stations:
+        for end_station in end_stations:
+            metro_system = get_active_stations() if stations_under_construction else vc_metro
+            
+            if stations_under_construction:
+                possible_route = dfs(metro_system, start_station, end_station)
+                if possible_route:
+                    routes.append(possible_route)
+            else:
+                route = bfs(metro_system, start_station, end_station)
+                if route:
+                    routes.append(route)
+
+    if routes:
+        shortest_route = min(routes, key=len)
+        return shortest_route
+    else:
+        return None
+
+def get_active_stations():
+    updated_metro = vc_metro.copy()
+
+    for station_under_construction in stations_under_construction:
+        for current_station, neighboring_stations in vc_metro.items():
+            if current_station not in stations_under_construction:
+                updated_metro[current_station] = updated_metro[current_station] - set(station_under_construction)
+            else:
+                updated_metro[current_station] = set([])
+
+    return updated_metro
 
 def goodbye():
   print("Thanks for using SkyRoute!")
@@ -240,6 +275,4 @@ def goodbye():
 for letter, landmark in landmark_choices.items():
   landmark_string += "{0} - {1}\n".format(letter, landmark)
 
-# print(skyroute())
-# print(get_route('Library Square', 'Vancouver Aquarium'))
 skyroute()
